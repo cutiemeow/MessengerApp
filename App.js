@@ -7,20 +7,20 @@
  */
 
 import React, {Fragment} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  FlatList
-} from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, AppRegistry} from 'react-native';
 import {createAppContainer, createStackNavigator} from 'react-navigation';
-
-
 import MainScreen from './src/screens/MainScreen';
 import ChatScreen from './src/screens/ChatScreen';
+//Redux
+import {createStore, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import rootReducer from './src/reducers/rootReducer';
+ const store = createStore(rootReducer);
+import { composeWithDevTools } from 'remote-redux-devtools';
+import thunk from 'redux-thunk';
+
+
+
 
 //#region use react-navigator to navigate
 const AppNavigator = createStackNavigator({
@@ -30,16 +30,17 @@ const AppNavigator = createStackNavigator({
 const AppContainer = createAppContainer(AppNavigator);
 //#endregion
 
-const App = () => {
+export default class App extends React.Component {
+  constructor(props){
+    super(props);
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        <AppContainer {...this.props} />
+      </Provider>
+    );
+  }
+}
 
 
-  return (
-    <AppContainer></AppContainer>
-  );
-};
-
-const styles = StyleSheet.create({
- 
-});
-
-export default App;

@@ -1,37 +1,100 @@
 import React,{Component} from 'react';
-import { View, Text, StyleSheet,Image,TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet,Image,TouchableOpacity, Alert} from 'react-native';
+import Swipeout from 'react-native-swipeout';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {deleteItemFlatList} from '../../actions/';
 
 export default class MessengersBox extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            activeRowKey : false
+        };
     }
     render(){
-        //const {titleMessage, lastestMessage, timeLastestMessage, imgMessage} = props;
-        const {item,index} = this.props
-        console.log(item.imgMessage)
-        return(
-            <TouchableOpacity>
-                <View style = {styles.containerMessagesBox}>
+       
+        
+        const {item,index,handleDeleteItemsFlatList,onPress,onDeleteee} = this.props
+        //#region Swipe
+        const swipeSetting = {
+            rowId : index,
+            secId :1,
+            autoClose : true,
+            style :{
+                backgroundColor: '#fff',
+                flexDirection: 'row'
                 
-                    <Image
-                        style = {styles.imgMessagesBox}
-                        source = {item.imgMessage}/>
-                    <View 
-                        style = {styles.titleMessagesBox}>
-                        <Text 
-                            style = {{fontSize: 22}}>
-                            {item.titleMessage}
-                        </Text>
-                        <View style = {styles.lastestMessageInMessageBox}>
+            },
+            onClose: (secId,rowId,dirrection) => {
+                if(this.state.activeRowKey != true){
+                    this.setState({activeRowKey : false});
+                }
+            },
+            onOpen: (secId,rowId,dirrection) => {
+                this.setState({activeRowKey : true});
+            },
+            buttonWidth: 30,
+            right:[
+                {
+                    backgroundColor : '#fff',
+                    onPress : () => {
+                        Alert.alert(
+                            'Alert',
+                            'Are you sure you want to delete ?',
+                            [
+                                {text: 'No', onPress: ()=> console.log('Cancel Press'),style : 'cancel'},
+                                {text: 'Yes', onPress: ()=>{
+                                    // handleDeleteItemsFlatList(index)
+                                    //use redux here
+                                    //this.props.onDelete(index);
+                                    // onDeleteee(index);
+                                    console.log(this.props.inDeleteee);
+                                }}
+                            ]
+                        );
+                    },
+                    component : (
+                        <View style = {{flex: 1 ,flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
+                            <Icon 
+                                    name = 'trash-o' 
+                                    size = {24} 
+                                    color = 'red'/>
+                        </View>
+                    ) 
+                    
+                }
+            ]
+
+        };
+        //#endregion
+
+        return(
+            <Swipeout {...swipeSetting} >
+                <TouchableOpacity
+                    onPress = {onPress}>
+                    <View style = {styles.containerMessagesBox}>
+                    
+                        <Image
+                            style = {styles.imgMessagesBox}
+                            source = {{uri: item.imgMessage}}/>
+                        <View 
+                            style = {styles.titleMessagesBox}>
                             <Text 
-                                style = {{marginRight:5}}>
-                                {item.lastestMessage}
+                                style = {{fontSize: 22}}>
+                                {item.titleMessage}
                             </Text>
-                            <Text>{item.lastTimeMessage}</Text>
+                            <View style = {styles.lastestMessageInMessageBox}>
+                                <Text 
+                                    style = {{marginRight:5}}>
+                                    {item.lastestMessage}
+                                </Text>
+                                <Text>{item.lastTimeMessage}</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Swipeout>
+            
             
         );}
     }
