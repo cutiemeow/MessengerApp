@@ -2,20 +2,16 @@ import React,{Component} from 'react';
 import { View, Text, StyleSheet,Image,TouchableOpacity, Alert} from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {loadDataFromAPI} from '../../utils/';
 
 export default class MessengersBox extends Component{
     constructor(props){
         super(props);
         this.state = {
             activeRowKey : false,
-            data : null
+            
         };
     }
-    componentDidMount = async () =>{
-        const responseJson =  await loadDataFromAPI();
-        this.setState({data : responseJson});
-    }
+    
     render(){
        
         

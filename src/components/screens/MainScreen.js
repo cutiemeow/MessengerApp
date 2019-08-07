@@ -2,8 +2,8 @@ import React,{Component} from 'react';
 import { View, Text, StyleSheet, Image, FlatList,SafeAreaView} from 'react-native';
 import { SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign'
-import {MessengerBoxContainer} from '../containers/MessengerBox/';
-import {loadDataFromAPI} from '../utils/';
+import {MessengerBoxContainer} from '../../containers/MessengerBox/';
+import {loadDataFromAPI} from '../../utils/';
 
 
 
@@ -16,7 +16,7 @@ export default class MainScreen extends Component{
         super(props);
         this.state = {
             deleteRowKeyFlatList: null,
-            dataMessages : null,
+            dataMessages : null
         }
     }
 
@@ -26,24 +26,20 @@ export default class MainScreen extends Component{
             deleteRowKeyFlatList : index
         });
     };
-    // componentDidMount() {
-    //     return fetch("https://my.api.mockaroo.com/messengerbox.json?key=28e2d490")
-    //         .then ((response) => response.json() )
-    //         .then ((responseJson) => {
-    //             this.setState({dataMessages: responseJson,})})
-    //         .catch((error) => {
-    //             console.log(error)}
-    //             );
-    // }
-
-    async componentDidMount(){
-        try {
+    componentDidMount = async () =>{
+       try {
             const responseJson =  await loadDataFromAPI();
             this.setState({dataMessages : responseJson});
-        } catch (error) {
+            
+            
+       } catch (error) {
             console.log(error)
-        }
+       }
     }
+//    async componentDidMount () {
+//         const responseJson =  await loadDataFromAPI();
+//         this.setState({dataMessages : responseJson});
+//     }
 
     render(){
         const {navigate} = this.props.navigation;
@@ -51,7 +47,7 @@ export default class MainScreen extends Component{
             <View style = {styles.containerMainScreen} >
                 <View style = {styles.topMainScreen}>
                     <Image
-                        source = {require('../../img/1.jpg')}
+                        source = {require('../../../img/1.jpg')}
                         style = {styles.imgAccount}
                         />
                     <Text style = {{fontSize : 24}}>
@@ -74,6 +70,7 @@ export default class MainScreen extends Component{
                         containerStyle = {{backgroundColor:'#fff'}} />
                 </View>
                 <View  style = {styles.messageMainScreen}>
+                    
                     <FlatList
                         data = {this.state.dataMessages}
                         renderItem = {({item,index}) =>{
