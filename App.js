@@ -12,15 +12,9 @@ import {createAppContainer, createStackNavigator} from 'react-navigation';
 import MainScreen from './src/screens/MainScreen';
 import ChatScreen from './src/screens/ChatScreen';
 //Redux
-import {createStore, applyMiddleware} from 'redux';
+//import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import rootReducer from './src/reducers/rootReducer';
- const store = createStore(rootReducer);
-import { composeWithDevTools } from 'remote-redux-devtools';
-import thunk from 'redux-thunk';
-
-
-
+import store from './src/store';
 
 //#region use react-navigator to navigate
 const AppNavigator = createStackNavigator({
@@ -37,7 +31,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer {...this.props} />
+        <AppContainer  />
       </Provider>
     );
   }

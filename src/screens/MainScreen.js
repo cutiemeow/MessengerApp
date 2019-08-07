@@ -2,8 +2,10 @@ import React,{Component} from 'react';
 import { View, Text, StyleSheet, Image, FlatList,SafeAreaView} from 'react-native';
 import { SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign'
-import MessengersBox from '../components/MessengersBox/';
-//import dataMessages from '../data';
+import {MessengerBoxContainer} from '../containers/MessengerBox/';
+import {loadDataFromAPI} from '../utils/';
+
+
 
 export default class MainScreen extends Component{
     static navigationOptions = {
@@ -36,8 +38,7 @@ export default class MainScreen extends Component{
 
     async componentDidMount(){
         try {
-            const response = await fetch('https://my.api.mockaroo.com/messengerbox.json?key=28e2d490');
-            const responseJson = await response.json();
+            const responseJson =  await loadDataFromAPI();
             this.setState({dataMessages : responseJson});
         } catch (error) {
             console.log(error)
@@ -77,15 +78,12 @@ export default class MainScreen extends Component{
                         data = {this.state.dataMessages}
                         renderItem = {({item,index}) =>{
                             return(
-                                <MessengersBox
-                                    {...this.props}
+                                <MessengerBoxContainer
+                                    {...this.state}
                                     item = {item}
                                     index = {index}
-                                    handleDeleteItemsFlatList = {this.handleDeleteItemsFlatList}
-                                    // onPress = {()=>{navigate('ChatScreen')}} >
-                                    //onDeleteee = {this.props.onDeleteee}>
-                                    >
-                                </MessengersBox>
+                                    handleDeleteItemsFlatList = {this.handleDeleteItemsFlatList}>
+                                </MessengerBoxContainer>
                             );
                             }} 
                         keyExtractor = {(item,index)=>{

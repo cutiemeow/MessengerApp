@@ -2,14 +2,19 @@ import React,{Component} from 'react';
 import { View, Text, StyleSheet,Image,TouchableOpacity, Alert} from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {deleteItemFlatList} from '../../actions/';
+import {loadDataFromAPI} from '../../utils/';
 
 export default class MessengersBox extends Component{
     constructor(props){
         super(props);
         this.state = {
-            activeRowKey : false
+            activeRowKey : false,
+            data : null
         };
+    }
+    componentDidMount = async () =>{
+        const responseJson =  await loadDataFromAPI();
+        this.setState({data : responseJson});
     }
     render(){
        
@@ -46,9 +51,8 @@ export default class MessengersBox extends Component{
                                 {text: 'Yes', onPress: ()=>{
                                     // handleDeleteItemsFlatList(index)
                                     //use redux here
-                                    //this.props.onDelete(index);
-                                    // onDeleteee(index);
-                                    console.log(this.props.inDeleteee);
+                                    this.props.onDeleteee(index);
+                                    
                                 }}
                             ]
                         );
